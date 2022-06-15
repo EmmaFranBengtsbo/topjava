@@ -4,7 +4,9 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,8 +24,9 @@ public class InMemoryMealRepository implements MealRepository {
         save(new Meal(7,LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
     }
 
-    public Collection<Meal> getAll() {
-        return repository.values();
+    @Override
+    public List<Meal> getAll() {
+        return new ArrayList<>(repository.values());
     }
     @Override
     public Meal get(int id) {

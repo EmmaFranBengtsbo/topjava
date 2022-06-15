@@ -20,12 +20,11 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h3>Meals</h3>
-<table border=1 cellpadding="8" cellspacing="8">
+<table border=1 cellpadding="8" cellspacing="0">
     <tr>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
-        <th>Превышение</th>
         <th></th>
         <th></th>
     </tr>
@@ -38,21 +37,11 @@
             </td>
             <td> <c:out value="${mealTo.description}"/></td>
             <td> <c:out value="${mealTo.calories}"/></td>
-            <td> <c:out value="${mealTo.excess}"/></td>
             <td><a href="meals?action=update&id=${mealTo.id}">Update</a></td>
             <td><a href="meals?action=delete&id=${mealTo.id}">Delete</a></td>
         </tr>
     </c:forEach>
-
-    <jsp:useBean id="mealTos" scope="request" type="java.util.List"/>
-    <c:forEach items="${mealTos}" var="mealTo">
-        <tr style="color : ${mealTo.excess ? 'red' : 'green'}">
-
-        </tr>
-    </c:forEach>
 </table>
-<p>
-    <a href="meals?action=create">Create Meal</a>
-</p>
+<a href="meals?action=create">Create Meal</a>
 </body>
 </html>

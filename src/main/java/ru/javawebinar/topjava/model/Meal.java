@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Meal {
     protected Integer id;
@@ -24,7 +23,7 @@ public class Meal {
         this(null,dateTime,description,calories);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

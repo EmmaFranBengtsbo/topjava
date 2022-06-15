@@ -10,30 +10,47 @@
 <html lang="ru">
 <head>
     <title>Create/Edit meal</title>
+    <style>
+        dl {
+            background: none repeat scroll 0 0 #FAFAFA;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+        dt {
+            display: inline-block;
+            width: 170px;
+        }
+
+        dd {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: top;
+        }
+    </style>
 </head>
 <body>
 <section>
-    <h2><a href="">Home</a></h2>
-    <h2>Edit Meal</h2>
+    <h2><a href="index.html">Home</a></h2>
+    <h2>${param.action == 'create' ? 'Create meal' : 'Update meal'}</h2>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals">
-        <input type="hidden" name="id" value="${meal.id}"/>
+        <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>
-            <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime"/></dd>
+            <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>
         </dl>
         <dl>
             <dt>Description:</dt>
-            <dd><input type="text" value="${meal.description}" size="40" name="description"/></dd>
+            <dd><input type="text" value="${meal.description}" size="40" name="description" required></dd>
         </dl>
         <dl>
             <dt>Calories:</dt>
-            <dd><input id="calories" type="number" value="${meal.calories}" size="40" name="calories"/></dd>
+            <dd><input id="calories" type="number" value="${meal.calories}" size="40" name="calories" required></dd>
         </dl>
 
         <button type="submit">Save</button>
-        <button type="reset">Clean</button>
         <button onclick="window.history.back()">Cancel</button>
     </form>
 </section>
