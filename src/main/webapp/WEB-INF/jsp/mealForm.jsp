@@ -9,8 +9,12 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Update meal'}</h2>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+    <%if (meal.getId() == null) {%>
+    <h2><spring2:message code="meal.create"/></h2>
+    <% } else { %>
+    <h2><spring2:message code="meal.edit"/></h2>
+    <% } %>
     <form method="post" action="meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
