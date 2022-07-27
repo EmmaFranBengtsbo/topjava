@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.javawebinar.topjava.MatcherFactory;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -14,6 +13,8 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,7 +32,6 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        final MatcherFactory.Matcher<MealTo> MEALTO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MealTo.class, null);
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -83,11 +83,14 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
+        List<MealTo> tos = MealsUtil.getTos(meals, MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        MealTo mealTo1 = tos.get(6);
+        MealTo mealTo5 = tos.get(2);
         perform(MockMvcRequestBuilders.get(REST_URL + "between")
-                .param("startDateTime", "2020:01:30T10:00:00")
-                .param("startDateTime", "2020:01:31T15:00:00"))
+                .param("startDateTime", "2020-01-30T10:00:00")
+                .param("endDateTime", "2020-01-31T13:00:00"))
                 .andExpect(status().isOk())
-                .andDo(print());
-        //  .andExpect(MEAL_MATCHER.contentJson(meal1));
+                .andDo(print())
+                .andExpect(MEALTO_MATCHER.contentJson(List.of(mealTo5, mealTo1)));
     }
 }

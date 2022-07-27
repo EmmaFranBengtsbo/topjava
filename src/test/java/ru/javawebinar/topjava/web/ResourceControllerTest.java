@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ResourceControllerTest extends AbstractControllerTest {
 
     @Test
-    void resoursce() throws Exception {
-        perform(get("/resources/css/styles.css"))
+    void resource() throws Exception {
+        perform(get("/resources/css/style.css"))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.valueOf("text/css")))
                 .andExpect(status().isOk());
