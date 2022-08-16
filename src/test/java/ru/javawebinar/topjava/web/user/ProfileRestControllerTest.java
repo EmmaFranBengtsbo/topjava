@@ -86,4 +86,14 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_WITH_MEALS_MATCHER.contentJson(user));
     }
+
+    @Test
+    void notValidData() throws Exception {
+        UserTo incorrectUserTo = new UserTo(null, null, "useryandex.ru", "psw", 0);
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(incorrectUserTo)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
