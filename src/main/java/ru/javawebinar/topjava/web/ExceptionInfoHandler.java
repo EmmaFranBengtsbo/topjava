@@ -21,10 +21,12 @@ import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
+//@ControllerAdvice(annotations = {RestController.class, CustomExceptionHandler.class})
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
@@ -39,7 +41,16 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        String rootMsg = ValidationUtil.getRootCause(e).getMessage();
+        if (rootMsg != null) {
+            String lowerCaseMsg = rootMsg.toLowerCase(Locale.ENGLISH);
+            if (lowerCaseMsg.contains("users_unique_email_idx")) {
+                return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, "User with this email already exists");
+            } else if (lowerCaseMsg.contains("meals_unique_user_datetime_idx")) {
+                return new ErrorInfo(req.getRequestURL(), VALIDATION_ERROR, "Meal with this dateTime already exists");
+            }
+        }
+        return logAndGetErrorInfo(req, e, false, DATA_ERROR);
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422

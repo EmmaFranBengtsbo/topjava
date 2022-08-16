@@ -134,4 +134,14 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(incorrectMeal)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void addDuplicateDateTime() throws Exception {
+        Meal duplicatedMeal = getDuplicated();
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(duplicatedMeal)))
+                .andExpect(status().isConflict());
+    }
 }

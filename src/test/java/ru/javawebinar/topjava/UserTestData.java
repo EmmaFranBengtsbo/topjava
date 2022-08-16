@@ -51,6 +51,17 @@ public class UserTestData {
         return updated;
     }
 
+    public static User getWithDuplicatedEmail() {
+        User updated = new User(user);
+        updated.setEmail("guest@gmail.com");
+        updated.setName("UpdatedName");
+        updated.setCaloriesPerDay(330);
+        updated.setPassword("newPass");
+        updated.setEnabled(false);
+        updated.setRoles(Collections.singletonList(Role.USER));
+        return updated;
+    }
+
     public static String jsonWithPassword(User user, String passw) {
         return JsonUtil.writeAdditionProps(user, "password", passw);
     }
